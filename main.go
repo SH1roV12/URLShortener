@@ -15,7 +15,11 @@ func main(){
 	api.POST("/create",func(c *gin.Context){
 		handlers.CreateLink(c,db)
 	})
-	
-
+	api.GET("/getallurl", func(c* gin.Context){
+		handlers.GetLinks(c,db)
+	})
+	r.GET("/:short",func(c *gin.Context){
+		handlers.RedirectFromShortURL(c,db)
+	})
 	r.Run(":8080")
 }
