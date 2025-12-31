@@ -18,7 +18,7 @@ Gin, БД MySql, а также библиотекой для создания ID
 ## Запуск
 1.Клонирование репозитория
 ```
-git clone https://github.com/твой-ник/urlshortener.git
+git clone https://github.com/SH1roV12/urlshortener.git
 
 ```
 Go сам подтянет все либы
