@@ -1,45 +1,41 @@
-## URL Shortener на Go + Gin + MySQL + Sqids
-Простой сервис для сокращения ссылок написанный на 
-Gin, БД MySql, а также библиотекой для создания ID для короткой ссылки - Sqids
+## URL Shortener in Go + Gin + MySQL + NanoID + Goose
+A simple service for linking to links written in
+Gin, a MySql database, and a library for creating IDs for short links - nanoid
 
-##  Возможности
-- Принимает длинный URL и генерирует короткий код.
-- Хранит соответствие в базе данных.
-- Все ответы в JSON формате
-- Редиректа с короткой ссылки на оригинальную.
+## Features
+- Accepts short URLs and direct URL codes.
+- Store matching URLs in the database.
+- All responses in JSON format
+- Redirect short links to the original.
+- Clean architecture + DDD
 
-## Принцип работы
-1.На вход принимается оригинальная ссылка в формате JSON 
-    Пример:{"url":"www.youtube.com"}
-2.Подсчитывается количество уже созданных строк + 1 и передается в GenerateUniqueID 
-для генерации кода(короткой ссылки) для short_url
-3.В БД вставляются значения короткой ссылки,оригинальной ссылки и даты добавления
+## How it works
+1. Upon entry, the original link in JSON format is accepted.
+Example: {"url":"www.youtube.com"}
+2. The database stores the values ​​of short links and original links.
+3. To go to the original site, go to the video at http://localhost:8080/generated id
 
-## Запуск
-1.Клонирование репозитория
+## Launch
+1. Clone the repository
 ```
 git clone https://github.com/SH1roV12/urlshortener.git
 
 ```
-Go сам подтянет все либы
+2.
+```
+docker compose --build
+```
 
-2.Создание БД (требуется предустановленный MySQL!)
-```
-CREATE DATABASE urlshortener;
-USE urlshortener;
+The server will start at http://localhost:8080
 
-CREATE TABLE urls (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    short_code VARCHAR(10) NOT NULL UNIQUE,
-    original_url TEXT NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+You can optionally change the server parameters by changing the environment variables in docker-compose.yaml:
 ```
-3.Создание .env файла по примеру(.env.example)
-Имя и пароль который был указан при создании БД(имя по умолчанию root)
-4.Запуск проект
+SERVICE_PORT=8080 - the server port
+LENGTH_GEN=8 - generate short link lengths (id)
+ALPHABET_GEN=(for example)ABCDabcd1234 - the alphabet that the id will consist of (it is not recommended to use special characters such as !?$, etc.)
+DB_NAME=link_shortener - the database name (must match the name in the MYSQL_DATABASE variable)
+DB_PORT=3306 - The default MySQL port is 3306
+DB_HOST=database - The database host; in the case of Docker Compose, the service (database) name
+DB_PASS=1212!!AaLXX - The database password (must match the password in the MYSQL_ROOT_PASSWORD variable)
+DB_USER=root - The username that will be used to connect
 ```
-go run main.go
-```
-Сервер запустится на http://localhost:8080 
-
