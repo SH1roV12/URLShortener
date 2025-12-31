@@ -1,0 +1,46 @@
+package app
+
+import (
+	"os"
+	"urlshortener/internal/config"
+	"urlshortener/internal/db"
+	"urlshortener/internal/handlers"
+	"urlshortener/internal/repo"
+	"urlshortener/internal/service"
+
+	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
+)
+
+
+
+func StartApp(){
+	godotenv.Load()
+
+
+	config := config.LoadConfig()
+	db:=db.InitDB(config.DatabaseConfig.DSN())
+	repo:=repo.NewLinkRepository(db.DB)
+	service:=service.NewLinkService(repo)
+	handlers:=handlers.NewLinkHandlers(service)
+	
+	
+	
+	r:=gin.Default()
+	api:=r.Group("api")
+	//Ручка создания ссылки
+	api.POST("/create",func(c *gin.Context){
+		handlers.CreateLink(c)
+	})
+	//Ручка получения всех ссылок 
+	api.GET("/getallurl", func(c* gin.Context){
+		handlers.GetLinks(c)
+	})
+	//Редирект на оригинальную ссылку
+	r.GET("/:short",func(c *gin.Context){
+		handlers.RedirectFromShortURL(c)
+	})
+
+	port:=os.Getenv("SERVICE_PORT")
+	r.Run(":"+port)
+}
