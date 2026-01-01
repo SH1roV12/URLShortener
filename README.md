@@ -13,7 +13,7 @@ Gin, a MySql database, and a library for creating IDs for short links - nanoid
 1. Upon entry, the original link in JSON format is accepted.
 Example: {"url":"www.youtube.com"}
 2. The database stores the values ​​of short links and original links.
-3. To go to the original site, go to the video at http://localhost:8080/generated id
+3. Go to the original site at http://localhost:8080/generatedId
 
 ## Launch
 1. Clone the repository
