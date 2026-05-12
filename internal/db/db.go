@@ -2,6 +2,8 @@ package db
 
 import (
 	"fmt"
+	"log"
+	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/pressly/goose/v3"
@@ -17,8 +19,8 @@ type DB struct{
 
 // Инициализация БД
 func InitDB(dsn string) *DB{
-	
-	
+	log.Println("Connecting to database....")
+	time.Sleep(time.Second*5)
 	db,err:=gorm.Open(mysql.Open(dsn),&gorm.Config{
 		Logger: logger.Default.LogMode(logger.Info),
 	} )
@@ -40,10 +42,7 @@ func InitDB(dsn string) *DB{
 		panic(err)
 	}
 
-	if err != nil{
-		panic(err)
-	}
-
+	
 	fmt.Println("DB has been started")
 	return &DB{db}
 }
